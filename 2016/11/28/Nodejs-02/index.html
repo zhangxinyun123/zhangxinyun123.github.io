@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="内容回顾
+NodeJS核心模块之Query Strings模块  作用:处理客户端通过get/post请求传递过来的参数
+  使用关键点:    1.需要导入 ‘querystring’ 这个核心模块    2.get请求时 querystring 一般是配合 url 核心模块一起使用的    3.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="John Doe">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Nodejs-02"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Hexo"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+    <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Nodejs-02 - Hexo</title>
+
+    <!-- Tachyons Core CSS -->
+    <link rel="stylesheet" href="//unpkg.com/tachyons/css/tachyons.min.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Analytics -->
+    
+
+
+</head>
+
+
+<body>
+
+<!-- Main Content -->
+<!-- Banner -->
+<!-- Banner -->
+<div class="w-100 bg-1 ph5-ns ph3 text-light">
+    
+    <nav class="db dt-l w-100 mw8 center border-box pv3">
+        <a class="db dtc-l v-mid link dim w-100 w-25-l tc tl-l mb2 mb0-l white" href="/" title="Hexo">
+            <img src="http://www.codeblocq.com/assets/projects/hexo-theme-anodyne/assets/anodyne.svg" class="dib h3" alt="Hexo">
+        </a>
+        <div class="db dtc-l v-mid w-100 w-75-l tc tr-l">
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/" 
+                    title="Home">
+                    Home
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/archives" 
+                    title="Archives">
+                    Archives
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/about.html" 
+                    title="About">
+                    About
+                </a>
+            
+                <a class="link dim f6 f5-l dib mr3 mr4-l white" 
+                    href="/contact.html" 
+                    title="Contact">
+                    Contact
+                </a>
+            
+        </div>
+    </nav>
+
+    <!-- Title -->
+    <div class="w-100 mw8 center vh-40 dt">
+        <div class="dtc v-mid white">
+            <h1 class="f1-l f2-m tc tc-m tl-ns">Nodejs-02</h1>
+            <p class="f4 fw3 pab-100px tc tc-m tl-ns">2016-11-28</p>
+        </div>
+    </div>
+
+    <!-- Icon -->
+    <div class="relative w-100 mw8 center white dn dn-m db-ns">
+        <i class="header-icon fa fa-file-text-o"></i>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="w-100 ph2 ph4-m ph5-l mv5 mv6-l">
+    <div class="content">
+        <div class="mw8 center">
+            <div class="cf">
+                <div class="fl w-100 w-70-l mw7 left fw3 lh-copy pr4-ns pr0-m post-content">
+                    <!-- Tags Vertical -->
+                    
+
+                    <!-- Main Post Content -->
+                    <h1 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h1><hr>
+<h1 id="NodeJS核心模块之Query-Strings模块"><a href="#NodeJS核心模块之Query-Strings模块" class="headerlink" title="NodeJS核心模块之Query Strings模块"></a>NodeJS核心模块之Query Strings模块</h1><p>  作用:处理客户端通过<code>get/post</code>请求传递过来的参数</p>
+<p>  使用关键点:<br>    1.需要导入 ‘querystring’ 这个核心模块<br>    2.<code>get</code>请求时 querystring 一般是配合 url 核心模块一起使用的<br>    3.<code>get/post</code>请求最终都需要调用 querystring.parse方法,<br>    将请求传递过来的键值对字符串转成js对象,方便操作</p>
+<p>  注意:<br>    get/post的请求方式是不一样的,客户端传递过来时,参数放在<br>    的地方是不一样的,所以服务器端处理方式也不太一样</p>
+<hr>
+<h1 id="GET-POST的再次复习与回顾"><a href="#GET-POST的再次复习与回顾" class="headerlink" title="GET/POST的再次复习与回顾"></a>GET/POST的再次复习与回顾</h1><p>  相同点:<br>    1.发送网络请求<br>    2.可以给服务器传递参数</p>
+<p>  不同点:<br>    传参的方式不一样<br>      GET:<br>        <a href="http://127.0.0.1/login?username=zhangsan&amp;password=123" target="_blank" rel="external">http://127.0.0.1/login?username=zhangsan&amp;password=123</a><br>        请求体中是没有内容的</p>
+<pre><code>  POST:
+    http://127.0.0.1/login
+    参数放在请求体 username=zhangsan&amp;password=123
+
+传参的长度
+  GET:有限制 256KB
+  POST:理论上没限制,但是每个服务器规定不一样 Apache 5M
+
+缓存方式
+  GET:有缓存
+  POST:没有,因为POST主要用来给服务器提交数据,而这些数据是动态变化的
+
+安全性方面
+  GET:很不安全
+  POST:相对安全
+</code></pre><p>  应用场景:<br>    1.GET 当单纯向服务器获取数据的时候,一般用GET,因为有缓存,效率高<br>    2.POST 一般用在提交数据给服务器<br>    3.根据公司后台人员给的API文档来</p>
+<hr>
+<h1 id="NodeJS核心模块之File-System模块"><a href="#NodeJS核心模块之File-System模块" class="headerlink" title="NodeJS核心模块之File System模块"></a>NodeJS核心模块之File System模块</h1><p>  前提:以后的所有静态资源(html,css,js,图片等)都是放在服务端<br>  的,如果浏览器需要这些html,css,js,图片等资源,则需要先将其读<br>  取到node.exe的内容中,然后再返回给浏览器</p>
+<p>  作用:<br>    在服务端来操作文件,可能是需要将浏览器上传的图片保存到服<br>    务器,也可能是需要将服务器的资源读取之后返回给浏览器</p>
+<p>  代码步骤:<br>    1.导入 fs 核心模块<br>    2.使用相应的方法来写入文件、读取文件等操作</p>
+<p>  注意点:<br>    目录 fs它是不会自动帮我们创建的需要我们自己手工创建<br>    文件如果不存在,调用writeFile与appendFile方法会自动帮<br>    我们创建</p>
+<hr>
+<h1 id="NodeJS核心模块之Path模块"><a href="#NodeJS核心模块之Path模块" class="headerlink" title="NodeJS核心模块之Path模块"></a>NodeJS核心模块之Path模块</h1><p>  作用:操作文件的路径,为文件操作服务</p>
+<p>  常用的几个函数:<br>    path.join(第一个路径,第二个路径) : 拼接路径</p>
+<hr>
+<h1 id="NodeJS核心模块之Global模块"><a href="#NodeJS核心模块之Global模块" class="headerlink" title="NodeJS核心模块之Global模块"></a>NodeJS核心模块之Global模块</h1><p>  作用:全局共享的,不需要导入模块即可以使用</p>
+<p>  常用的属性:<br>    <strong>dirname : 文件所在的文件夹路径
+    </strong>filename : 文件所在的路径<br>    require() : 导入需要的模块<br>    module : 自定义模块时用到<br>    exports : 自定义模块时用到</p>
+<hr>
+<h1 id="乱码"><a href="#乱码" class="headerlink" title="乱码"></a>乱码</h1><p>  原因:保存时候的编码和读取时候的编码不一致</p>
+<p>  解决办法:保存和读取的时候使用同一种编码就可以了  GBK —&gt; GBK</p>
+<p>  开发建议:以后无论是保存文件还是读取文件都是用UTF-8</p>
+<hr>
+<h1 id="字符集-amp-编码"><a href="#字符集-amp-编码" class="headerlink" title="字符集&amp;编码"></a>字符集&amp;编码</h1><p>  编码是字符集的实现</p>
+<p>  ASICC码:键盘上看得到的 a-z A-Z 0-9 !@#$% </p>
+<p>  ISO-8859-1 欧洲计算机协会 英文</p>
+<p>  汉字<br>    简体:GB2312(5千多个汉字)/GBK(2万)<br>    繁体:大五码 Big-5</p>
+<p>  日语:<br>    xxx</p>
+<p>  韩国:<br>    ooo</p>
+<p>  UTF-8 200万个,基本上就已经囊括了世界上所有的语言</p>
+<hr>
+<h1 id="NodeJS里面的编码"><a href="#NodeJS里面的编码" class="headerlink" title="NodeJS里面的编码"></a>NodeJS里面的编码</h1><p>  只支持<br>    ASCII 键盘上看得到的<br>    HEX 16进制<br>    UTF-8 推荐使用UTF-8<br>    ISO-8859-1  欧洲计算机协会</p>
+<p>  不支持<br>    GB2312/GBK,解决办法,在npmjs上面找第三方包,iconv-lite</p>
+<hr>
+<h1 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h1><p>  概念:<br>    用来管理nodejs第三方包的一个工具</p>
+<p>  注意:<br>    一般情况下,安装了node之后,都会安装npm,npm所在的位置一般在<br>    C:\Program Files\nodejs\node_modules</p>
+<pre><code>如果在终端中输入 npm -v 有反映就表示成功了
+</code></pre><hr>
+<h1 id="npm操作之从npmjs-com中安装-下载包"><a href="#npm操作之从npmjs-com中安装-下载包" class="headerlink" title="npm操作之从npmjs.com中安装/下载包"></a>npm操作之从npmjs.com中安装/下载包</h1><p>  npm在安装好nodejs之后,就会在nodejs安装目录的node_moules目录下自动帮我们安装好了npm这个包</p>
+<p>  安装包/下载包分两种</p>
+<pre><code>本地安装:用在当前项目中
+命令:npm install 包的名称
+
+
+全局安装:以后在终端中使用
+命令:npm install -g 包名称
+</code></pre><hr>
+<h1 id="nrm"><a href="#nrm" class="headerlink" title="nrm"></a>nrm</h1><p>  相当于镜像</p>
+<p>  npm install [-g] 包名称   默认情况下去npmjs.com下载包</p>
+<p>  nrm ls 可以查看有哪些镜像,并且当前使用的是哪个镜像</p>
+<p>  cnpm 的使用<br>    步骤1:安装cnpm的全局包 npm install -g cnpm</p>
+<pre><code>步骤2:
+</code></pre><hr>
+<h1 id="cnpm-与-npm-的区别"><a href="#cnpm-与-npm-的区别" class="headerlink" title="cnpm 与 npm 的区别"></a>cnpm 与 npm 的区别</h1><p>  相同点:都是管理nodejs第三方包的网站</p>
+<p>  不同点:<br>    npm 是正宗<br>    cnpm 是淘宝团队开发的</p>
+<p>  <a href="https://npm.taobao.org" target="_blank" rel="external">https://npm.taobao.org</a> 这个网站的所有内容来自哪里npmjs.com</p>
+<pre><code>安装包的方式不一样
+  npm : npm install [-g] 包名称
+  cnpm : cnpm install [-g] 包名称
+
+注意点:
+  npmjs.com 既可以从他上面 下载包,也可以往它上面传我们自己写的包
+  https://npm.taobao.org  是一个只读的,只能下载,不能上传
+
+应用场景:
+  一般情况下 使用 npmjs.com
+  特殊情况下 使用 https://npm.taobao.org 
+</code></pre><h1 id="同步-amp-异步"><a href="#同步-amp-异步" class="headerlink" title="同步&amp;异步"></a>同步&amp;异步</h1><p>  例子:<br>    我在上课的过程中想喝水</p>
+<pre><code>最终的目的:
+  拿到水
+
+同步的方式:我先停止停止上课,我自己去开水房打水,然后边上课,边喝水
+
+异步的方式:我还是继续上课,请程龙大哥给我打水,然后给我,我喝水
+</code></pre><p>  同步:<br>    我们每天写的代码 90%都是同步,同步有一个特点一件一件事情<br>    的做,比如代码从上而下依次执行,这就是一个同步的体现</p>
+<p>  异步特点:<br>    能同时做几件事<br>    异步都是要有回调函数来做后续的处理<br>    NodeJS中异步函数可以嵌套</p>
+<p>  异步适合的场景:<br>    耗时间操作用异步比较合适,比如文件操作,网络请求</p>
+<hr>
+<h1 id="自定义模块"><a href="#自定义模块" class="headerlink" title="自定义模块"></a>自定义模块</h1><p>  require() 导入fs的核心模块、第三方模块、自定义模块<br>    导入自定义的模块,需要加上路径及拓展名</p>
+<p>  module.exports 导出单个对象/属性/函数</p>
+<p>  exports.xxx = xxx 可以导出一个或是多个对象/属性/函数</p>
+<p>  注意点:<br>    module.exports与exports 都可以导出对象/属性/函数,但是一个适合导出单个,另外一个适合导出一个或是多个</p>
+<pre><code>通过require()导入另外一个自定义模块,其实是导入另外一个自定义模块中`exports`所指向的东西,这点特别重要,要理解
+</code></pre><hr>
+
+                    
+                    <!-- Tags Bottom -->
+                    
+
+                    <!-- Comments -->
+                    
+
+
+
+                </div>
+                <div class="fl w-100 w-30-l center fw3 lh-copy pl4-ns tl black-50">
+                    
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 1: About -->
+                    <div class="mt5 mt0-l">
+    <article class="dt db-l mw8 mw8-m mw5-ns center ml0-l bg-white mv3">
+        <div class="dn dtc-m db-l v-mid tc pr4 pr0-l" style="min-width: 6rem;">
+            <img src="http://tachyons.io/img/avatar_1.jpg" class="mb4-l br-100 h3 w3 h4-l w4-l dib" title="John Doe">
+        </div>
+        <div class="dtc db-l v-mid lh-copy measure center f6 black-50 tj">
+            My name is Jonathan Klughertz and this is my blog.<br>I am a full stack software engineer with a strong front-end focus.<br> I currently live and work in Singapore, hit me up if you are in the region.
+        </div>
+    </article>
+</div>
+
+                    <hr class="dn-l mw4 black-50 mt5" />
+                    
+                    <!-- Widget 2: Categories -->
+                    
+
+                    <!-- Widget 3: Recent Posts -->
+                    <div class="mt5 tc tl-l">
+    <h3>Recent Posts</h3>
+    
+        <p>
+            <a href="/2017/03/01/hello-world/">Hello World</a>
+        </p>
+    
+        <p>
+            <a href="/2016/12/27/Nodejs-04/">Nodejs-04</a>
+        </p>
+    
+        <p>
+            <a href="/2016/12/15/Nodejs-03/">Nodejs-03</a>
+        </p>
+    
+        <p>
+            <a href="/2016/11/28/Nodejs-02/">Nodejs-02</a>
+        </p>
+    
+        <p>
+            <a href="/2016/11/12/Nodejs01/">Nodejs-01</a>
+        </p>
+    
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<div class="bg-1 ph2 ph5-ns pv5">
+        <div class="mv8">
+            <div class="center tc">
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://twitter.com/?lang=en" target="_blank">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.facebook.com/" target="_blank">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://dribbble.com/" target="_blank">
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://github.com/klugjo/hexo-theme-anodyne" target="_blank">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://plus.google.com/" target="_blank">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://www.behance.net/" target="_blank">
+                            <i class="fa fa-behance"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="https://500px.com/" target="_blank">
+                            <i class="fa fa-500px"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="mailto:test@example.com" target="_blank">
+                            <i class="fa fa-envelope"></i>
+                        </a>
+                    </div>
+                
+                    <div class="dib mh3">
+                        <a class="f3 f2-ns white dim" href="/#" target="_blank">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </div>
+                
+            </div>
+            <div class="f6 f5-ns center tc white pt5 fw3">
+                @Untitled. All right reserved | Design & Hexo <a class="link dim white" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+            </div>
+        </div>
+    </div>
+
+<!-- After Footer -->
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
